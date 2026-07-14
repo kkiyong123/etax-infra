@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: etax-build-deploy-run-
+  namespace: etax-app
+spec:
+  pipelineRef:
+    name: etax-build-deploy
+  params:
+  - name: SERVICE_NAME
+    value: etax-was
+  - name: GIT_URL
+    value: https://github.com/kkiyong123/etax-was
+  - name: GIT_REVISION
+    value: main
+  workspaces:
+  - name: source
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: ocs-storagecluster-ceph-rbd
