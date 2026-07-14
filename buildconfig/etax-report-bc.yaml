@@ -1,0 +1,27 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: etax-report
+  namespace: etax-app
+  labels:
+    app: etax-report
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/kkiyong123/etax-report
+      ref: main
+    contextDir: .
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: etax-report:latest
+  triggers:
+  - type: GitHub
+    github:
+      secret: etax-report-webhook-secret
+  - type: ConfigChange
