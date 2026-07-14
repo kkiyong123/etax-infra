@@ -1,0 +1,27 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: etax-edms
+  namespace: etax-app
+  labels:
+    app: etax-edms
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/kkiyong123/etax-edms
+      ref: main
+    contextDir: .
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: etax-edms:latest
+  triggers:
+  - type: GitHub
+    github:
+      secret: etax-edms-webhook-secret
+  - type: ConfigChange
