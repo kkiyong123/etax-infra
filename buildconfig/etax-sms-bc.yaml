@@ -1,0 +1,27 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: etax-sms
+  namespace: etax-app
+  labels:
+    app: etax-sms
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/kkiyong123/etax-sms
+      ref: main
+    contextDir: .
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: etax-sms:latest
+  triggers:
+  - type: GitHub
+    github:
+      secret: etax-sms-webhook-secret
+  - type: ConfigChange
